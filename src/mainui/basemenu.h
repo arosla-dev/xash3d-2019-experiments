@@ -463,7 +463,6 @@ void UI_Audio_Precache( void );
 void UI_Video_Precache( void );
 void UI_VidOptions_Precache( void );
 void UI_VidModes_Precache( void );
-void UI_CustomGame_Precache( void );
 void UI_Credits_Precache( void );
 void UI_GoToSite_Precache( void );
 
@@ -486,7 +485,6 @@ void UI_Audio_Menu( void );
 void UI_Video_Menu( void );
 void UI_VidOptions_Menu( void );
 void UI_VidModes_Menu( void );
-void UI_CustomGame_Menu( void );
 void UI_Credits_Menu( void );
 
 //

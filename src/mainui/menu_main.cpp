@@ -288,9 +288,6 @@ static void UI_Main_Callback( void *self, int event )
 			UI_SaveLoad_Menu();
 		else UI_LoadGame_Menu();
 		break;
-	case ID_CUSTOMGAME:
-		UI_CustomGame_Menu();
-		break;
 	case ID_PREVIEWS:
 		SHELL_EXECUTE( MenuStrings[HINT_PREVIEWS_CMD], NULL, false );
 		break;
