@@ -212,7 +212,7 @@ static void UI_Options_Init( void )
 	uiOptions.update.generic.x = UI_SELECTION_POSX;
 	uiOptions.update.generic.y = 380;
 	uiOptions.update.generic.name = "Update";
-	uiOptions.update.generic.statusText = "Donwload the latest version of the Xash3D engine";
+	uiOptions.update.generic.statusText = "check last updates";
 	uiOptions.update.generic.callback = UI_Options_Callback;
 	UI_UtilSetupPicButton(&uiOptions.update,PC_UPDATE);
 

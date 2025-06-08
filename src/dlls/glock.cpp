@@ -123,7 +123,7 @@ void CGlock::SecondaryAttack(void)
 		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 3.4;
 		m_flTimeWeaponIdle = gpGlobals->time + 3.4;
 		m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 3.4;
-		SendWeaponAnim(GLOCK_REMOVE_SILENCER);
+		SendWeaponAnim(GLOCK_ADD_SILENCER);
 		pev->body = 0;
 		m_iSilencer = 0;
 	}

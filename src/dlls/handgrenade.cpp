@@ -44,6 +44,7 @@ public:
 	int GetItemInfo(ItemInfo *p);
 
 	void PrimaryAttack( void );
+	void SecondaryAttack(void);
 	BOOL Deploy( void );
 	BOOL CanHolster( void );
 	void Holster( void );
@@ -135,6 +136,17 @@ void CHandGrenade::PrimaryAttack()
 	}
 }
 
+void CHandGrenade::SecondaryAttack()
+{
+	if (!m_flStartThrow && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+	{
+		m_flStartThrow = gpGlobals->time;
+		m_flReleaseThrow = 0;
+
+		SendWeaponAnim(HANDGRENADE_PINPULL);
+		m_flTimeWeaponIdle = gpGlobals->time + 0.5;
+	}
+}
 
 void CHandGrenade::WeaponIdle( void )
 {

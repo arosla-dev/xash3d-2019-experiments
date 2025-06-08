@@ -137,21 +137,18 @@ void CPython::Holster()
 
 void CPython::SecondaryAttack(void)
 {
-
-		return;
-
-
 	if (m_fInZoom)
 	{
-		m_fInZoom = FALSE;
-		m_pPlayer->m_iFOV = 0;  // 0 means reset to default fov
+		m_pPlayer->m_iFOV = 0; // 0 means reset to default fov
+		m_fInZoom = 0;
 	}
 	else
 	{
-		m_fInZoom = TRUE;
 		m_pPlayer->m_iFOV = 40;
+		m_fInZoom = 1;
 	}
 
+	pev->nextthink = gpGlobals->time + 0.1;
 	m_flNextSecondaryAttack = gpGlobals->time + 0.5;
 }
 

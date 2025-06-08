@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #ifndef NET_PROTOCOL_H
 #define NET_PROTOCOL_H
 
-#define PROTOCOL_VERSION		49
+#define PROTOCOL_VERSION		1
 
 // server to client
 #define svc_bad			0	// immediately crash client when received

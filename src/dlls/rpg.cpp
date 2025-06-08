@@ -147,6 +147,10 @@ void CLaserSpot::Precache(void)
 	PRECACHE_MODEL("sprites/laserdot.spr");
 };
 
+
+
+
+
 class CRpgRocket : public CGrenade
 {
 public:
@@ -199,7 +203,7 @@ void CRpgRocket::Spawn(void)
 	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/grenade.mdl");
+	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin(pev, pev->origin);
 
@@ -239,7 +243,7 @@ void CRpgRocket::RocketTouch(CBaseEntity* pOther)
 void CRpgRocket::Precache(void)
 {
 	PRECACHE_MODEL("models/rpgrocket.mdl");
-	m_iTrail = PRECACHE_MODEL("sprites/explode1.spr");
+	m_iTrail = PRECACHE_MODEL("sprites/smoke.spr");
 	PRECACHE_SOUND("weapons/rocket1.wav");
 }
 
@@ -304,16 +308,6 @@ void CRpgRocket::FollowThink(void)
 	vecTarget = gpGlobals->v_forward;
 	flMax = 4096;
 
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
-	WRITE_BYTE(TE_SPRITE);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
-	WRITE_SHORT(m_iTrail);
-	WRITE_BYTE(5); // scale * 10
-	WRITE_BYTE(255); // brightness
-	MESSAGE_END();
-
 	// Examine all entities within a reasonable radius
 	while ((pOther = UTIL_FindEntityByClassname(pOther, "laser_spot")) != NULL)
 	{
@@ -374,6 +368,13 @@ void CRpgRocket::FollowThink(void)
 
 	pev->nextthink = gpGlobals->time + 0.1;
 }
+
+
+
+
+
+
+
 
 void CRpg::Reload(void)
 {

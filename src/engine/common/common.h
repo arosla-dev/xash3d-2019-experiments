@@ -123,7 +123,7 @@ typedef enum
 #include "crtlib.h"
 #include "cvar.h"
 
-#define XASH_VERSION	"0.99"		// engine current version
+#define XASH_VERSION	"0.61"		// engine current version
 
 // PERFORMANCE INFO
 #define MIN_FPS         	15.0		// host minimum fps value for maxfps. //magic nipples - 20
