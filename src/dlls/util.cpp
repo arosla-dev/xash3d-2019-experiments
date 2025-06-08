@@ -1006,10 +1006,7 @@ void UTIL_SetOrigin( entvars_t *pev, const Vector &vecOrigin )
 	SET_ORIGIN(ENT(pev), vecOrigin );
 }
 
-void UTIL_ParticleEffect( const Vector &vecOrigin, const Vector &vecDirection, ULONG ulColor, ULONG ulCount )
-{
-	PARTICLE_EFFECT( vecOrigin, vecDirection, (float)ulColor, (float)ulCount );
-}
+
 
 
 float UTIL_Approach( float target, float value, float speed )
@@ -2530,4 +2527,70 @@ int	CRestore::BufferCheckZString( const char *string )
 	}
 	return 0;
 }
+void UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, ULONG ulColor, ULONG ulCount)
+{
+	PARTICLE_EFFECT(vecOrigin, vecDirection, (float)ulColor, (float)ulCount);
+}
+/*
+void UTIL_QuakeExplosion(int msg_dest, entvars_t* pev, const Vector& location, float offsetx, float offsety, float offsetz, float shrapMod) {
+	UTIL_QuakeExplosion(msg_dest,  pev, location, offsetx, offsety, offsetz, shrapMod);
+}
+void UTIL_QuakeExplosion(int msg_dest, const float* pMsgOrigin, entvars_t* pev, const Vector& location, float offsetx, float offsety, float offsetz, float shrapMod) {
+	UTIL_QuakeExplosion(msg_dest, pMsgOrigin,  pev, location, offsetx, offsety, offsetz, shrapMod);
+}
 
+// do not call directly outside of utility files!
+// UTIL_Explosion and some others call this if cl_explosion says it should be.
+// And so far we're ignoring the 'offset' coords, but they're stil given in case 
+// that changes.
+void UTIL_QuakeExplosion(int msg_dest, const float* pMsgOrigin, edict_t* ed, entvars_t* pev, const Vector& location, float offsetx, float offsety, float offsetz, float shrapMod) {
+	// never called serverside..?
+
+	//MODDD - TEST!!!
+	//PLAYBACK_EVENT_FULL (FEV_GLOBAL, NULL, g_quakeExplosionEffect, 0.0, 
+	//(float *)&altLocation, (float *)&Vector(0,0,0), 0.0, 0.0, 0, 0, FALSE, FALSE);
+
+	//PLAYBACK_EVENT_FULL(FEV_GLOBAL, NULL, g_quakeExplosionEffect, 0.0, (float*)&location, (float*)&Vector(0, 0, 0), EASY_CVAR_GET_DEBUGONLY(shrapRand), EASY_CVAR_GET_DEBUGONLY(shrapRandHeightExtra), (int)EASY_CVAR_GET_DEBUGONLY(shrapMode), (int)(EASY_CVAR_GET_DEBUGONLY(explosionShrapnelMulti) * 14 * shrapMod), FALSE, FALSE);
+
+	//MODDD TODO - these play the sound at the exploding entity's location, not necesarily at the sent origin.
+	//Should we use the AMBIENT sound player to play the sound at a specific origin? Would that be ok, no side effects?
+	//Example: This section was found in TEXTURETYPE_PlaySound, serverside:
+	//    UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, rgsz[RANDOM_LONG(0,cnt-1)], fvol, fattn, 0, 96 + RANDOM_LONG(0,0xf));
+	//    //EMIT_SOUND_DYN( ENT(m_pPlayer->pev), CHAN_WEAPON, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 0, 96 + RANDOM_LONG(0,0xf));
+	//...2nd line commented out, or rough equivalent of the first Ambient version to give a more specific location.
+
+	// ALSO, this is often playing on top of a relatively quiet sound, 'weapon/debris#.wav', as 
+	// seen in ggrenade.cpp, look for explosionDebrisSoundVolume.
+	
+
+}//END OF UTIL_QuakeExplosion
+
+
+
+
+void UTIL_SpriteOrQuakeExplosion(int msg_dest, entvars_t* pev, const Vector& location, float offsetx, float offsety, float offsetz, short sprite, float size, int brightness, const Vector& altLocation, float shrapMod) {
+	UTIL_SpriteOrQuakeExplosion(msg_dest, pev, location, offsetx, offsety, offsetz, sprite, size, brightness, altLocation, shrapMod);
+}
+void UTIL_SpriteOrQuakeExplosion(int msg_dest, const float* pMsgOrigin, entvars_t* pev, const Vector& location, float offsetx, float offsety, float offsetz, short sprite, float size, int brightness, const Vector& altLocation, float shrapMod) {
+	UTIL_SpriteOrQuakeExplosion(msg_dest, pMsgOrigin,  pev, location, offsetx, offsety, offsetz, sprite, size, brightness, altLocation, shrapMod);
+}
+// Decision based off cl_explosion:
+// 0: generate a sprite effect (like a more custom explosion graphic), or...
+// 1: use the same quake explosion as most other places in that case.
+void UTIL_SpriteOrQuakeExplosion(int msg_dest, const float* pMsgOrigin, edict_t* ed, entvars_t* pev, const Vector& location, float offsetx, float offsety, float offsetz, short sprite, float size, int brightness, const Vector& altLocation, float shrapMod) {
+
+	
+		MESSAGE_BEGIN(msg_dest, SVC_TEMPENTITY, pMsgOrigin, ed);
+		WRITE_BYTE(TE_SPRITE);
+		WRITE_COORD(location.x + offsetx);
+		WRITE_COORD(location.y + offsety);
+		WRITE_COORD(location.z + offsetz);
+		WRITE_SHORT(sprite);
+		WRITE_BYTE(size); // scale * 10
+		WRITE_BYTE(brightness); // brightness
+		MESSAGE_END();
+	
+		UTIL_QuakeExplosion(msg_dest, pMsgOrigin, ed, pev, altLocation, offsetx, offsety, offsetz, shrapMod);
+	
+
+}// UTIL_SpriteOrQuakeExplosion*/

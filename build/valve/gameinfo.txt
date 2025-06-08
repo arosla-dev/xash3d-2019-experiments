@@ -22,6 +22,4 @@ max_tempents	2048
 max_beams		512
 max_particles	32768
 
-gamemode "singleplayer_only"
-
 url_update	"https://github.com/Magic-Nipples/Xash3D-VS2019-Clean"
