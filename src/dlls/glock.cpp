@@ -1,15 +1,11 @@
 /***
 *
 *	Copyright (c) 1999, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
-*	All Rights Reserved.
 *
-*   Use, distribution, and modification of this source code and/or resulting
-*   object code is restricted to non-commercial enhancements to products from
-*   Valve LLC.  All other use, distribution, or modification is prohibited
-*   without written permission from Valve LLC.
+* 	Silencer Code edit by Reagan, use is fine with credit : ]
+*
+*   
+*   
 *
 ****/
 
@@ -31,33 +27,34 @@ enum glock_e {
 	GLOCK_RELOAD_NOT_EMPTY,
 	GLOCK_DRAW,
 	GLOCK_HOLSTER,
-	GLOCK_ADD_SILENCER
+	GLOCK_ADD_SILENCER,
+	GLOCK_REMOVE_SILENCER
 };
 
 class CGlock : public CBasePlayerWeapon
 {
 public:
-	void Spawn( void );
-	void Precache( void );
-	int iItemSlot( void ) { return 2; }
-	int GetItemInfo(ItemInfo *p);
+	void Spawn(void);
+	void Precache(void);
+	int iItemSlot(void) { return 2; }
+	int GetItemInfo(ItemInfo* p);
 
-	void PrimaryAttack( void );
-	void SecondaryAttack( void );
-	void GlockFire( float flSpread, float flCycleTime, BOOL fUseAutoAim );
-	BOOL Deploy( void );
-	void Reload( void );
-	void WeaponIdle( void );
+	void PrimaryAttack(void);
+	void SecondaryAttack(void);
+	void GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim);
+	BOOL Deploy(void);
+	void Reload(void);
+	void WeaponIdle(void);
 	int m_iShell;
 };
-LINK_ENTITY_TO_CLASS( weapon_glock, CGlock );
-LINK_ENTITY_TO_CLASS( weapon_9mmhandgun, CGlock );
+LINK_ENTITY_TO_CLASS(weapon_glock, CGlock);
+LINK_ENTITY_TO_CLASS(weapon_9mmhandgun, CGlock);
 
 
-void CGlock::Spawn( )
+void CGlock::Spawn()
 {
 	pev->classname = MAKE_STRING("weapon_9mmhandgun"); // hack to allow for old names
-	Precache( );
+	Precache();
 	m_iId = WEAPON_GLOCK;
 	SET_MODEL(ENT(pev), "models/w_9mmhandgun.mdl");
 
@@ -67,23 +64,24 @@ void CGlock::Spawn( )
 }
 
 
-void CGlock::Precache( void )
+void CGlock::Precache(void)
 {
 	PRECACHE_MODEL("models/v_9mmhandgun.mdl");
 	PRECACHE_MODEL("models/w_9mmhandgun.mdl");
 	PRECACHE_MODEL("models/p_9mmhandgun.mdl");
 
-	m_iShell = PRECACHE_MODEL ("models/shell.mdl");// brass shell
+	m_iShell = PRECACHE_MODEL("models/shell.mdl");// brass shell
 
 	PRECACHE_SOUND("items/9mmclip1.wav");
 	PRECACHE_SOUND("items/9mmclip2.wav");
 
-	PRECACHE_SOUND ("weapons/pl_gun1.wav");//silenced handgun
-	PRECACHE_SOUND ("weapons/pl_gun2.wav");//silenced handgun
-	PRECACHE_SOUND ("weapons/pl_gun3.wav");//handgun
+	PRECACHE_SOUND("weapons/pl_gun1.wav");//silenced handgun
+	PRECACHE_SOUND("weapons/pl_gun2.wav");//silenced handgun
+	PRECACHE_SOUND("weapons/pl_gun3.wav");//handgun
+	PRECACHE_SOUND("weapons/glock_silencer.wav");//handgun
 }
 
-int CGlock::GetItemInfo(ItemInfo *p)
+int CGlock::GetItemInfo(ItemInfo* p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "9mm";
@@ -100,23 +98,40 @@ int CGlock::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CGlock::Deploy( )
+BOOL CGlock::Deploy()
 {
 	// pev->body = 1;
-	return DefaultDeploy( "models/v_9mmhandgun.mdl", "models/p_9mmhandgun.mdl", GLOCK_DRAW, "onehanded" );
+	return DefaultDeploy("models/v_9mmhandgun.mdl", "models/p_9mmhandgun.mdl", GLOCK_DRAW, "onehanded");
 }
 
-void CGlock::SecondaryAttack( void )
+void CGlock::SecondaryAttack(void)
 {
-	GlockFire( 0.1, 0.2, FALSE );
+	if (pev->body == 0)
+	{
+		pev->body = 1;
+		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glock_silencer.wav", RANDOM_FLOAT(0.9, 1.0), ATTN_NORM);
+		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 3.4;
+		m_flTimeWeaponIdle = gpGlobals->time + 3.4;
+		m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 3.4;
+		SendWeaponAnim(GLOCK_ADD_SILENCER);
+	}
+	else
+	{
+		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glock_silencer.wav", RANDOM_FLOAT(0.9, 1.0), ATTN_NORM);
+		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 3.4;
+		m_flTimeWeaponIdle = gpGlobals->time + 3.4;
+		m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 3.4;
+		SendWeaponAnim(GLOCK_REMOVE_SILENCER);
+		pev->body = 0;
+	}
 }
 
-void CGlock::PrimaryAttack( void )
+void CGlock::PrimaryAttack(void)
 {
-	GlockFire( 0.01, 0.3, TRUE );
+	GlockFire(0.01, 0.3, TRUE);
 }
 
-void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
+void CGlock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 {
 	if (m_iClip <= 0)
 	{
@@ -134,20 +149,20 @@ void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
 	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
 
 	if (m_iClip != 0)
-		SendWeaponAnim( GLOCK_SHOOT );
+		SendWeaponAnim(GLOCK_SHOOT);
 	else
-		SendWeaponAnim( GLOCK_SHOOT_EMPTY );
+		SendWeaponAnim(GLOCK_SHOOT_EMPTY);
 
 	// player "shoot" animation
-	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
-	UTIL_MakeVectors( m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle );
-		
-	Vector	vecShellVelocity = m_pPlayer->pev->velocity 
-							 + gpGlobals->v_right * RANDOM_FLOAT(50,70) 
-							 + gpGlobals->v_up * RANDOM_FLOAT(100,150) 
-							 + gpGlobals->v_forward * 25;
-	EjectBrass ( pev->origin + m_pPlayer->pev->view_ofs + gpGlobals->v_up * -12 + gpGlobals->v_forward * 32 + gpGlobals->v_right * 6 , vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHELL ); 
+	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
+
+	Vector	vecShellVelocity = m_pPlayer->pev->velocity
+		+ gpGlobals->v_right * RANDOM_FLOAT(50, 70)
+		+ gpGlobals->v_up * RANDOM_FLOAT(100, 150)
+		+ gpGlobals->v_forward * 25;
+	EjectBrass(pev->origin + m_pPlayer->pev->view_ofs + gpGlobals->v_up * -12 + gpGlobals->v_forward * 32 + gpGlobals->v_right * 6, vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHELL);
 
 	// silenced
 	if (pev->body == 1)
@@ -155,7 +170,7 @@ void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
 		m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
 		m_pPlayer->m_iWeaponFlash = DIM_GUN_FLASH;
 
-		switch(RANDOM_LONG(0,1))
+		switch (RANDOM_LONG(0, 1))
 		{
 		case 0:
 			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/pl_gun1.wav", RANDOM_FLOAT(0.9, 1.0), ATTN_NORM);
@@ -170,56 +185,56 @@ void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
 		// non-silenced
 		m_pPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;
 		m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
-		EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/pl_gun3.wav", RANDOM_FLOAT(0.92, 1.0), ATTN_NORM, 0, 98 + RANDOM_LONG(0,3));
+		EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/pl_gun3.wav", RANDOM_FLOAT(0.92, 1.0), ATTN_NORM, 0, 98 + RANDOM_LONG(0, 3));
 	}
 
-	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
+	Vector vecSrc = m_pPlayer->GetGunPosition();
 	Vector vecAiming;
-	
-	if ( fUseAutoAim )
+
+	if (fUseAutoAim)
 	{
-		vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
+		vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 	}
 	else
 	{
 		vecAiming = gpGlobals->v_forward;
 	}
 
-	m_pPlayer->FireBullets( 1, vecSrc, vecAiming, Vector( flSpread, flSpread, flSpread ), 8192, BULLET_PLAYER_9MM, 0 );
+	m_pPlayer->FireBullets(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), 8192, BULLET_PLAYER_9MM, 0);
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = gpGlobals->time + flCycleTime;
 
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT(10, 15);
 
 	m_pPlayer->pev->punchangle.x -= 2;
 }
 
 
-void CGlock::Reload( void )
+void CGlock::Reload(void)
 {
 	int iResult;
 
 	if (m_iClip == 0)
-		iResult = DefaultReload(GLOCK_MAX_CLIP, GLOCK_RELOAD, 1.5 );
+		iResult = DefaultReload(GLOCK_MAX_CLIP, GLOCK_RELOAD, 1.5);
 	else
-		iResult = DefaultReload(GLOCK_MAX_CLIP, GLOCK_RELOAD_NOT_EMPTY, 1.5 );
+		iResult = DefaultReload(GLOCK_MAX_CLIP, GLOCK_RELOAD_NOT_EMPTY, 1.5);
 
 	if (iResult)
 	{
-		m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+		m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT(10, 15);
 	}
 }
 
 
 
-void CGlock::WeaponIdle( void )
+void CGlock::WeaponIdle(void)
 {
-	ResetEmptySound( );
+	ResetEmptySound();
 
-	m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
+	m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 
 	if (m_flTimeWeaponIdle > gpGlobals->time)
 		return;
@@ -244,7 +259,7 @@ void CGlock::WeaponIdle( void )
 			iAnim = GLOCK_IDLE2;
 			m_flTimeWeaponIdle = gpGlobals->time + 40.0 / 16.0;
 		}
-		SendWeaponAnim( iAnim );
+		SendWeaponAnim(iAnim);
 	}
 }
 
@@ -257,20 +272,20 @@ void CGlock::WeaponIdle( void )
 
 class CGlockAmmo : public CBasePlayerAmmo
 {
-	void Spawn( void )
-	{ 
-		Precache( );
-		SET_MODEL(ENT(pev), "models/w_9mmclip.mdl");
-		CBasePlayerAmmo::Spawn( );
-	}
-	void Precache( void )
+	void Spawn(void)
 	{
-		PRECACHE_MODEL ("models/w_9mmclip.mdl");
+		Precache();
+		SET_MODEL(ENT(pev), "models/w_9mmclip.mdl");
+		CBasePlayerAmmo::Spawn();
+	}
+	void Precache(void)
+	{
+		PRECACHE_MODEL("models/w_9mmclip.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) 
-	{ 
-		if (pOther->GiveAmmo( AMMO_GLOCKCLIP_GIVE, "9mm", _9MM_MAX_CARRY ) != -1)
+	BOOL AddAmmo(CBaseEntity* pOther)
+	{
+		if (pOther->GiveAmmo(AMMO_GLOCKCLIP_GIVE, "9mm", _9MM_MAX_CARRY) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
 			return TRUE;
@@ -278,8 +293,8 @@ class CGlockAmmo : public CBasePlayerAmmo
 		return FALSE;
 	}
 };
-LINK_ENTITY_TO_CLASS( ammo_glockclip, CGlockAmmo );
-LINK_ENTITY_TO_CLASS( ammo_9mmclip, CGlockAmmo );
+LINK_ENTITY_TO_CLASS(ammo_glockclip, CGlockAmmo);
+LINK_ENTITY_TO_CLASS(ammo_9mmclip, CGlockAmmo);
 
 
 
