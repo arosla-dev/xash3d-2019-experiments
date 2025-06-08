@@ -40,8 +40,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define ID_CONFIGURATION	5
 #define ID_SAVERESTORE	6	
 #define ID_MULTIPLAYER	7
-#define ID_CUSTOMGAME	8
-#define ID_PREVIEWS		9
 #define ID_QUIT		10
 #define ID_QUIT_BUTTON	11
 #define ID_MINIMIZE		12
@@ -62,10 +60,8 @@ typedef struct
 	menuPicButton_s	configuration;
 	menuPicButton_s	saveRestore;
 	menuPicButton_s	multiPlayer;
-	menuPicButton_s	customGame;
-	menuPicButton_s	previews;
+//	menuPicButton_s	previews;
 	menuPicButton_s	quit;
-
 	menuBitmap_s	minimizeBtn;
 	menuBitmap_s	quitButton;
 
@@ -136,8 +132,6 @@ static void UI_QuitDialog( void )
 	uiMain.saveRestore.generic.flags ^= QMF_INACTIVE;
 	uiMain.configuration.generic.flags ^= QMF_INACTIVE;
 	uiMain.multiPlayer.generic.flags ^= QMF_INACTIVE;
-	uiMain.customGame.generic.flags ^= QMF_INACTIVE;
-	uiMain.previews.generic.flags ^= QMF_INACTIVE;
 	uiMain.quit.generic.flags ^= QMF_INACTIVE;
 	uiMain.minimizeBtn.generic.flags ^= QMF_INACTIVE;
 	uiMain.quitButton.generic.flags ^= QMF_INACTIVE;
@@ -160,12 +154,9 @@ static void UI_PromptDialog( void )
 	uiMain.saveRestore.generic.flags ^= QMF_INACTIVE;
 	uiMain.configuration.generic.flags ^= QMF_INACTIVE;
 	uiMain.multiPlayer.generic.flags ^= QMF_INACTIVE;
-	uiMain.customGame.generic.flags ^= QMF_INACTIVE;
-	uiMain.previews.generic.flags ^= QMF_INACTIVE;
 	uiMain.quit.generic.flags ^= QMF_INACTIVE;
 	uiMain.minimizeBtn.generic.flags ^= QMF_INACTIVE;
 	uiMain.quitButton.generic.flags ^= QMF_INACTIVE;
-
 	uiMain.msgBox.generic.flags ^= QMF_HIDDEN;
 	uiMain.dlgMessage1.generic.flags ^= QMF_HIDDEN;
 	uiMain.no.generic.flags ^= QMF_HIDDEN;
@@ -288,9 +279,6 @@ static void UI_Main_Callback( void *self, int event )
 			UI_SaveLoad_Menu();
 		else UI_LoadGame_Menu();
 		break;
-	case ID_PREVIEWS:
-		SHELL_EXECUTE( MenuStrings[HINT_PREVIEWS_CMD], NULL, false );
-		break;
 	case ID_QUIT:
 	case ID_QUIT_BUTTON:
 		UI_QuitDialog();
@@ -327,11 +315,6 @@ static void UI_Main_Init( void )
 	if( strlen( gMenu.m_gameinfo.trainmap ) && _stricmp( gMenu.m_gameinfo.trainmap, gMenu.m_gameinfo.startmap ))
 		bTrainMap = true;
 	else bTrainMap = false;
-
-	if( CVAR_GET_FLOAT( "host_allow_changegame" ))
-		bCustomGame = true;
-	else bCustomGame = false;
-
 	// precache .avi file and get logo width and height
 	PRECACHE_LOGO( "logo.avi" );
 
@@ -456,32 +439,6 @@ static void UI_Main_Init( void )
 		uiMain.hazardCourse.generic.flags |= QMF_GRAYED;
 	}
 
-	uiMain.customGame.generic.id = ID_CUSTOMGAME;
-	uiMain.customGame.generic.type = QMTYPE_BM_BUTTON;
-	uiMain.customGame.generic.flags = QMF_HIGHLIGHTIFFOCUS|QMF_DROPSHADOW|QMF_NOTIFY;
-	uiMain.customGame.generic.name = "Custom Game";
-	uiMain.customGame.generic.statusText = MenuStrings[HINT_CUSTOM_GAME];
-	uiMain.customGame.generic.x = UI_MAINSELECTION_POSX;
-	uiMain.customGame.generic.y = bTrainMap ? 530 : 480;
-	uiMain.customGame.generic.callback = UI_Main_Callback;
-
-	UI_UtilSetupPicButton( &uiMain.customGame, PC_CUSTOM_GAME );
-
-	uiMain.previews.generic.id = ID_PREVIEWS;
-	uiMain.previews.generic.type = QMTYPE_BM_BUTTON;
-	uiMain.previews.generic.flags = QMF_HIGHLIGHTIFFOCUS|QMF_DROPSHADOW|QMF_NOTIFY;
-	uiMain.previews.generic.name = "Previews";
-	uiMain.previews.generic.statusText = MenuStrings[HINT_PREVIEWS_TEXT];
-	uiMain.previews.generic.x = UI_MAINSELECTION_POSX;
-	uiMain.previews.generic.y = (bCustomGame) ? (bTrainMap ? 580 : 530) : (bTrainMap ? 530 : 480);
-	uiMain.previews.generic.callback = UI_Main_Callback;
-
-	// too short execute string - not a real command
-	if( strlen( MenuStrings[HINT_PREVIEWS_CMD] ) <= 3 )
-		uiMain.previews.generic.flags |= QMF_GRAYED;
-
-	UI_UtilSetupPicButton( &uiMain.previews, PC_PREVIEWS );
-
 	uiMain.quit.generic.id = ID_QUIT;
 	uiMain.quit.generic.type = QMTYPE_BM_BUTTON;
 	uiMain.quit.generic.flags = QMF_HIGHLIGHTIFFOCUS|QMF_DROPSHADOW|QMF_NOTIFY;
@@ -576,11 +533,6 @@ static void UI_Main_Init( void )
 	UI_AddItem( &uiMain.menu, (void *)&uiMain.saveRestore );
 	UI_AddItem( &uiMain.menu, (void *)&uiMain.configuration );
 	UI_AddItem( &uiMain.menu, (void *)&uiMain.multiPlayer );
-
-	if ( bCustomGame )
-		UI_AddItem( &uiMain.menu, (void *)&uiMain.customGame );
-
-	UI_AddItem( &uiMain.menu, (void *)&uiMain.previews );
 	UI_AddItem( &uiMain.menu, (void *)&uiMain.quit );
 	UI_AddItem( &uiMain.menu, (void *)&uiMain.minimizeBtn );
 	UI_AddItem( &uiMain.menu, (void *)&uiMain.quitButton );

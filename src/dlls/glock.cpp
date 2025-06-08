@@ -46,6 +46,7 @@ public:
 	void Reload(void);
 	void WeaponIdle(void);
 	int m_iShell;
+	int m_iSilencer;
 };
 LINK_ENTITY_TO_CLASS(weapon_glock, CGlock);
 LINK_ENTITY_TO_CLASS(weapon_9mmhandgun, CGlock);
@@ -109,6 +110,7 @@ void CGlock::SecondaryAttack(void)
 	if (pev->body == 0)
 	{
 		pev->body = 1;
+		m_iSilencer = 1;
 		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glock_silencer.wav", RANDOM_FLOAT(0.9, 1.0), ATTN_NORM);
 		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 3.4;
 		m_flTimeWeaponIdle = gpGlobals->time + 3.4;
@@ -123,6 +125,7 @@ void CGlock::SecondaryAttack(void)
 		m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 3.4;
 		SendWeaponAnim(GLOCK_REMOVE_SILENCER);
 		pev->body = 0;
+		m_iSilencer = 0;
 	}
 }
 
@@ -145,9 +148,12 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 	}
 
 	m_iClip--;
+	
 
-	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
 
+	ALERT(at_console, "primary: pev->body %d\n", pev->body);
+	ALERT(at_console, "primary: m_iSilencer %d\n", m_iSilencer);
+	
 	if (m_iClip != 0)
 		SendWeaponAnim(GLOCK_SHOOT);
 	else
@@ -168,7 +174,7 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 	if (pev->body == 1)
 	{
 		m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
-		m_pPlayer->m_iWeaponFlash = DIM_GUN_FLASH;
+	//	m_pPlayer->m_iWeaponFlash = DIM_GUN_FLASH;
 
 		switch (RANDOM_LONG(0, 1))
 		{
@@ -186,6 +192,7 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 		m_pPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;
 		m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
 		EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/pl_gun3.wav", RANDOM_FLOAT(0.92, 1.0), ATTN_NORM, 0, 98 + RANDOM_LONG(0, 3));
+		m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
 	}
 
 	Vector vecSrc = m_pPlayer->GetGunPosition();

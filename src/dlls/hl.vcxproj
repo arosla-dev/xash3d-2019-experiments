@@ -167,6 +167,7 @@
     <ClCompile Include="crossbow.cpp" />
     <ClCompile Include="crowbar.cpp" />
     <ClCompile Include="defaultai.cpp" />
+    <ClCompile Include="diablo.cpp" />
     <ClCompile Include="doors.cpp" />
     <ClCompile Include="effects.cpp" />
     <ClCompile Include="egon.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="gman.cpp" />
     <ClCompile Include="handgrenade.cpp" />
     <ClCompile Include="hassassin.cpp" />
+    <ClCompile Include="hassault.cpp" />
     <ClCompile Include="headcrab.cpp" />
     <ClCompile Include="healthkit.cpp" />
     <ClCompile Include="hgrunt.cpp" />

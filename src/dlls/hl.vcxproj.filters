@@ -339,6 +339,12 @@
     <ClCompile Include="light_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hassault.cpp">
+      <Filter>Source Files\Monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="diablo.cpp">
+      <Filter>Source Files\Monsters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="activitymap.h">

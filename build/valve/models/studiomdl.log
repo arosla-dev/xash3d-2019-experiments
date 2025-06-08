@@ -1,0 +1,56 @@
+	    Magic Nipples Studio Model Compiler
+		 Electric Company 2020(c)
+
+
+grabbing: diablo_ref.smd		[mesh]
+grabbing: @get_bug.smd		[anim][81 frames]
+grabbing: @itch.smd		[anim][51 frames]
+grabbing: @shakes.smd		[anim][41 frames]
+grabbing: @walk.smd		[anim][30 frames]
+grabbing: @run.smd		[anim][13 frames]
+grabbing: @turn_left.smd		[anim][16 frames]
+grabbing: @turn_right.smd		[anim][16 frames]
+grabbing: @crouch idle.smd		[anim][26 frames]
+grabbing: @crouch idle figit.smd		[anim][23 frames]
+grabbing: @crouch_to_crawl.smd		[anim][19 frames]
+grabbing: @crawl_on_belly.smd		[anim][19 frames]
+grabbing: @crouch_to_jump.smd		[anim][26 frames]
+grabbing: @flinch.smd		[anim][16 frames]
+grabbing: @flinch_hard.smd		[anim][61 frames]
+grabbing: @flinch_light.smd		[anim][16 frames]
+grabbing: @death_drop.smd		[anim][51 frames]
+grabbing: @death_simple.smd		[anim][56 frames]
+grabbing: @death_violent.smd		[anim][26 frames]
+grabbing: @attack_primary.smd		[anim][18 frames]
+grabbing: @attack_main_claw.smd		[anim][21 frames]
+grabbing: @attack_simple_claw.smd		[anim][26 frames]
+grabbing: @walk_to_crouch.smd		[anim][21 frames]
+grabbing: @walk_to_stand.smd		[anim][21 frames]
+grabbing: @walk_to_run.smd		[anim][6 frames]
+grabbing: @fall_c1a1b.smd		[anim][96 frames]
+BMP Butt1.bmp [52 39] (104%)    2796 bytes
+BMP Tail.bmp [80 32] (100%)    3328 bytes
+BMP Leg_Back_In1.bmp [72 108] (103%)    8544 bytes
+BMP Leg_Back1.bmp [64 90] (105%)    6528 bytes
+BMP Claw_back1.bmp [40 37] (100%)    2248 bytes
+BMP Foot_Back_Bttm1.bmp [20 20] (100%)    1168 bytes
+BMP Side1.bmp [140 130] (100%)   18968 bytes
+BMP Face2.bmp [100 103] (100%)   11068 bytes
+BMP Mouth1.bmp [64 80] (102%)    5888 bytes
+BMP Fnt_Paw_Out1.bmp [48 50] (100%)    3168 bytes
+BMP Claw_Frnt1.bmp [40 37] (100%)    2248 bytes
+BMP Foot_Fnt_Bttm1.bmp [20 20] (100%)    1168 bytes
+BMP ArmPit1.bmp [28 30] (108%)    1608 bytes
+BMP Tounge1.bmp [20 40] (105%)    1568 bytes
+animation compressed of 24.0% at original size
+---------------------
+bones         8532 bytes (49)
+ik/pose          0 bytes
+sequences   134912 bytes (796 frames) [0:49]
+vertices     18020 bytes (496 vertices, 890 normals)
+mesh         13016 bytes (1006 tris, 258 strips)
+models       31224 bytes
+keyvalues        0 bytes
+textures     71444 bytes
+total     240.34 Kb
+writing: diablo\compile\diablo.mdl
