@@ -1,0 +1,11 @@
+//chrome overlay file
+//make sure text is all lower case
+//texture name | scale | chrome name (.tga) | scroll speed (*0.001
+glass_med			1.0		gfx/chrome1.tga		3
+
+generic87a			2.0		gfx/chrome2.tga		5
+generic87b			2.0		gfx/chrome2.tga		5
+ven_vend1b			2.0		gfx/chrome2.tga		5
+fifties_flr03		3.0		gfx/chrome2.tga		6
+
+glass_bright		2.0		gfx/chrome3.tga		2

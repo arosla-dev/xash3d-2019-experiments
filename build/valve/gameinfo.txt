@@ -1,0 +1,27 @@
+//default gamemode stuff
+
+basedir		"valve"
+gamedir		"valve"
+
+title		"Half-Life"
+
+startmap		"c0a0"
+trainmap		"t0a0"
+
+dllpath		"bin"
+gamedll		"bin/hl.dll"
+
+version		"1.0.0"
+icon		"game.ico"
+
+sp_entity		"info_player_start"
+mp_entity		"info_player_deathmatch"
+
+max_edicts		4096
+max_tempents	2048
+max_beams		512
+max_particles	32768
+
+gamemode "singleplayer_only"
+
+url_update	"https://github.com/Magic-Nipples/Xash3D-VS2019-Clean"
