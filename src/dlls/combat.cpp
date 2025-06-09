@@ -1359,13 +1359,15 @@ void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
 		UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(12, 18) + (int)(15 * extraBloodFactor));
 		 }
 
-	//old
+// OLD, DO NO UNCOMMENT !!!!
+/*
 	//	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
 
 
 	//i dont think that i need more blood stream
 	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
 	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+*/
 }
 
 //=========================================================
