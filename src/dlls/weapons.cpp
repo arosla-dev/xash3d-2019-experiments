@@ -31,8 +31,10 @@
 #include "decals.h"
 #include "gamerules.h"
 
+
 extern CGraph	WorldGraph;
 extern int gEvilImpulse101;
+extern int bloodcolor;
 
 
 #define NOT_USED 255
@@ -145,6 +147,17 @@ SpawnBlood
 void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
 {
 	UTIL_BloodDrips( vecSpot, g_vecAttackDir, bloodColor, (int)flDamage );
+	
+	//blood color & extra blood factor
+	int theBlood = BLOOD_COLOR_RED | BLOOD_COLOR_GREEN | BLOOD_COLOR_YELLOW;
+	float extraBloodFactor = (min(flDamage, 30) / 30);
+	
+	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+//	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+
+	//i dont think that i need more blood stream
+	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+	
 }
 
 

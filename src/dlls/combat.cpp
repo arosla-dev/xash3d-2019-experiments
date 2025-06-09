@@ -1353,12 +1353,14 @@ void CBaseMonster :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector
 		default:
 			break;
 		}
-
+		
 		SpawnBlood(ptr->vecEndPos, BloodColor(), flDamage);// a little surface blood.
 		TraceBleed( flDamage, vecDir, ptr, bitsDamageType );
 		AddMultiDamage( pevAttacker, this, flDamage, bitsDamageType );
 	}
 }
+
+
 
 /*
 ================
@@ -1488,7 +1490,7 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgBuckshot, vecDir, &tr, DMG_BULLET);
 				if (!tracer)
 				{
-					// TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
+					TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 					DecalGunshot(&tr, iBulletType);
 				}
 				break;

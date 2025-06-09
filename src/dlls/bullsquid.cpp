@@ -575,8 +575,8 @@ void CBullsquid :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			
 			if ( pHurt )
 			{
-				//pHurt->pev->punchangle.z = -15;
-				//pHurt->pev->punchangle.x = -45;
+				pHurt->pev->punchangle.z = -15;
+				pHurt->pev->punchangle.x = -45;
 				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_forward * 100;
 				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_up * 100;
 			}
@@ -642,9 +642,9 @@ void CBullsquid :: HandleAnimEvent( MonsterEvent_t *pEvent )
 					}
 
 					
-					//pHurt->pev->punchangle.x = RANDOM_LONG(0,34) - 5;
-					//pHurt->pev->punchangle.z = RANDOM_LONG(0,49) - 25;
-					//pHurt->pev->punchangle.y = RANDOM_LONG(0,89) - 45;
+					pHurt->pev->punchangle.x = RANDOM_LONG(0,34) - 5;
+					pHurt->pev->punchangle.z = RANDOM_LONG(0,49) - 25;
+					pHurt->pev->punchangle.y = RANDOM_LONG(0,89) - 45;
 		
 					// screeshake transforms the viewmodel as well as the viewangle. No problems with seeing the ends of the viewmodels.
 					UTIL_ScreenShake( pHurt->pev->origin, 25.0, 1.5, 0.7, 2 );
