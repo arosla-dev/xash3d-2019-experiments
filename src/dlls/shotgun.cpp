@@ -61,6 +61,7 @@ public:
 	float m_flNextReload;
 	int m_iShell;
 	float m_flPumpTime;
+	void Holster(void);
 };
 LINK_ENTITY_TO_CLASS( weapon_shotgun, CShotgun );
 
@@ -124,6 +125,13 @@ int CShotgun::AddToPlayer( CBasePlayer *pPlayer )
 	return FALSE;
 }
 
+void CShotgun::Holster()
+{
+	m_fInReload = false; // cancel any reload in progress.
+
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0f;
+	SendWeaponAnim(SHOTGUN_HOLSTER);
+}
 
 int CShotgun::GetItemInfo(ItemInfo *p)
 {

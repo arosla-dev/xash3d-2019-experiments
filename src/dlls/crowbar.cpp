@@ -108,8 +108,10 @@ BOOL CCrowbar::Deploy( )
 
 void CCrowbar::Holster( )
 {
-	m_pPlayer->m_flNextAttack = gpGlobals->time + 0.5;
-	SendWeaponAnim( CROWBAR_HOLSTER );
+	m_fInReload = false; // cancel any reload in progress.
+
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0f;
+	SendWeaponAnim(CROWBAR_HOLSTER);
 }
 
 

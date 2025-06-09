@@ -33,6 +33,7 @@ enum mp5_e
 	MP5_FIRE1,
 	MP5_FIRE2,
 	MP5_FIRE3,
+	MP5_HOLSTER,
 };
 
 
@@ -51,6 +52,7 @@ public:
 	BOOL Deploy( void );
 	void Reload( void );
 	void WeaponIdle( void );
+	void Holster(void);
 	float m_flNextAnimTime;
 	int m_iShell;
 };
@@ -120,6 +122,14 @@ int CMP5::GetItemInfo(ItemInfo *p)
 	p->iWeight = MP5_WEIGHT;
 
 	return 1;
+}
+
+void CMP5::Holster()
+{
+	m_fInReload = false; // cancel any reload in progress.
+
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0f;
+	SendWeaponAnim(MP5_HOLSTER);
 }
 
 int CMP5::AddToPlayer( CBasePlayer *pPlayer )

@@ -45,6 +45,7 @@ public:
 	BOOL Deploy(void);
 	void Reload(void);
 	void WeaponIdle(void);
+	void Holster (void);
 	int m_iShell;
 	int m_iSilencer;
 };
@@ -123,7 +124,7 @@ void CGlock::SecondaryAttack(void)
 		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 3.4;
 		m_flTimeWeaponIdle = gpGlobals->time + 3.4;
 		m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 3.4;
-		SendWeaponAnim(GLOCK_ADD_SILENCER);
+		SendWeaponAnim(GLOCK_REMOVE_SILENCER);
 		pev->body = 0;
 		m_iSilencer = 0;
 	}
@@ -131,7 +132,14 @@ void CGlock::SecondaryAttack(void)
 
 void CGlock::PrimaryAttack(void)
 {
-	GlockFire(0.01, 0.3, TRUE);
+	// Hold for rapid fire
+	if ((m_pPlayer->m_afButtonPressed & IN_ATTACK) == 0)
+	{
+		GlockFire(0.1, 0.2, false);
+		return;
+	}
+
+	GlockFire(0.01, 0.3, true);
 }
 
 void CGlock::GlockFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
@@ -235,7 +243,13 @@ void CGlock::Reload(void)
 	}
 }
 
-
+void CGlock::Holster()
+{
+	m_fInReload = false; // cancel any reload in progress.
+	
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0f;
+	SendWeaponAnim(GLOCK_HOLSTER);
+}
 
 void CGlock::WeaponIdle(void)
 {
