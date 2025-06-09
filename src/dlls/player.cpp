@@ -2978,6 +2978,22 @@ void CBasePlayer::SelectNextItem( int iItem )
 
 	m_pActiveItem->m_ForceSendAnimations = false;
 
+
+	if (pItem == m_pLastItem)
+	{
+		m_pLastItem = m_pActiveItem;
+		m_pActiveItem = pItem;
+		if (m_pActiveItem)
+		{
+			m_pActiveItem->m_ForceSendAnimations = true;
+			m_pActiveItem->Deploy();
+			m_pActiveItem->m_ForceSendAnimations = false;
+			m_pActiveItem->UpdateItemInfo();
+		}
+			m_pNextItem = nullptr;
+		return;
+	}
+
 	m_pNextItem = pItem;
 	m_pActiveItem = nullptr;
 }
@@ -3019,6 +3035,21 @@ void CBasePlayer::SelectItem(const char *pstr)
 	// FIX, this needs to queue them up and delay
 	if (m_pActiveItem)
 		m_pActiveItem->Holster( );
+
+	if (pItem == m_pLastItem)
+	{
+		m_pLastItem = m_pActiveItem;
+		m_pActiveItem = pItem;
+		if (m_pActiveItem)
+		{
+			m_pActiveItem->m_ForceSendAnimations = true;
+			m_pActiveItem->Deploy();
+			m_pActiveItem->m_ForceSendAnimations = false;
+			m_pActiveItem->UpdateItemInfo();
+		}
+		m_pNextItem = nullptr;
+		return;
+	}
 	
 	m_pLastItem = m_pActiveItem;
 	m_pNextItem = pItem;
