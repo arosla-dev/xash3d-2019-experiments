@@ -1201,7 +1201,6 @@ Vector UTIL_RandomBloodVector( void )
 	return direction;
 }
 
-
 void UTIL_BloodDecalTrace( TraceResult *pTrace, int bloodColor )
 {
 	if ( UTIL_ShouldShowBlood( bloodColor ) )

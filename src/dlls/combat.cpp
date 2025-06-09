@@ -1321,6 +1321,52 @@ void CBaseMonster::TraceAttack(entvars_t *pevAttacker, float flDamage, Vector ve
 }
 */
 
+/*
+================
+SpawnBlood
+================
+*/
+void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
+{
+	UTIL_BloodDrips(vecSpot, g_vecAttackDir, bloodColor, (int)flDamage);
+
+	//blood color & extra blood factor
+
+	//int theBlood = BloodColor();
+	int theBlood = bloodColor;
+	float extraBloodFactor = (min(flDamage, 30) / 30);
+
+	if (DEAD_NO) {
+
+		if (flDamage) {
+			// killing blow?
+			UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, (int)RANDOM_LONG(74, 95) + (int)(30 * extraBloodFactor));
+					  }
+		
+		else {
+			// normal
+			UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(2, 5) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+			 }
+	}
+
+	if (DEAD_DYING) {
+		// dying
+		UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(15, 21) + (int)(18 * extraBloodFactor));
+					}
+
+	else {
+		// DEAD.  Similar, but spray it further up to be more noticeable.
+		UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(12, 18) + (int)(15 * extraBloodFactor));
+		 }
+
+	//old
+	//	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+
+
+	//i dont think that i need more blood stream
+	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+}
 
 //=========================================================
 // TraceAttack
