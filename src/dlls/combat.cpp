@@ -35,6 +35,7 @@ extern DLL_GLOBAL int			g_iSkillLevel;
 
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
 extern entvars_t *g_pevLastInflictor;
+//extern int BloodColor(void);
 
 #define GERMAN_GIB_COUNT		4
 #define	HUMAN_GIB_COUNT			6
@@ -1319,6 +1320,7 @@ void CBaseMonster::TraceAttack(entvars_t *pevAttacker, float flDamage, Vector ve
 	}
 }
 */
+
 
 //=========================================================
 // TraceAttack

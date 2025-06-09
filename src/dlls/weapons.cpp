@@ -34,7 +34,6 @@
 
 extern CGraph	WorldGraph;
 extern int gEvilImpulse101;
-extern int bloodcolor;
 
 
 #define NOT_USED 255
@@ -139,26 +138,6 @@ void AddMultiDamage( entvars_t *pevInflictor, CBaseEntity *pEntity, float flDama
 	gMultiDamage.amount += flDamage;
 }
 
-/*
-================
-SpawnBlood
-================
-*/
-void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
-{
-	UTIL_BloodDrips( vecSpot, g_vecAttackDir, bloodColor, (int)flDamage );
-	
-	//blood color & extra blood factor
-	int theBlood = BLOOD_COLOR_RED | BLOOD_COLOR_GREEN | BLOOD_COLOR_YELLOW;
-	float extraBloodFactor = (min(flDamage, 30) / 30);
-	
-	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
-//	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
-
-	//i dont think that i need more blood stream
-	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
-	
-}
 
 
 int DamageDecal( CBaseEntity *pEntity, int bitsDamageType )
@@ -638,6 +617,29 @@ BOOL CanAttack( float attack_time, float curtime, BOOL isPredicted )
 	else
 		return ( attack_time <= 0.0 ) ? TRUE : FALSE;
 }
+
+/*
+================
+SpawnBlood
+================
+*/
+void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
+{
+	UTIL_BloodDrips(vecSpot, g_vecAttackDir, bloodColor, (int)flDamage);
+
+	//blood color & extra blood factor
+	
+	//int theBlood = BloodColor();
+	int theBlood = bloodColor;
+	float extraBloodFactor = (min(flDamage, 30) / 30);
+
+	UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+
+	//i dont think that i need more blood stream
+	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+	//UTIL_BloodStream(vecSpot, UTIL_RandomBloodVector(), theBlood, RANDOM_LONG(5, 8) + (int)(RANDOM_FLOAT(4, 8) * extraBloodFactor));
+}
+
 
 void CBasePlayerWeapon::ItemPostFrame( void )
 {
