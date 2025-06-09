@@ -132,6 +132,8 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 
 	DEFINE_FIELD(CBasePlayer, Rain_endFade, FIELD_TIME),
 	DEFINE_FIELD(CBasePlayer, Rain_nextFadeUpdate, FIELD_TIME),
+	// bluenighthawk : HOLSTER
+	DEFINE_FIELD(CBasePlayer, m_pNextItem, FIELD_CLASSPTR),
 	
 	//DEFINE_FIELD( CBasePlayer, m_fDeadTime, FIELD_FLOAT ), // only used in multiplayer games
 	//DEFINE_FIELD( CBasePlayer, m_fGameHUDInitialized, FIELD_INTEGER ), // only used in multiplayer games
@@ -2933,6 +2935,10 @@ int CBasePlayer::Restore( CRestore &restore )
 
 void CBasePlayer::SelectNextItem( int iItem )
 {
+
+	if (m_pNextItem)
+		return;
+
 	CBasePlayerItem* pItem;
 
 	pItem = m_rgpPlayerItems[iItem];
@@ -2962,24 +2968,23 @@ void CBasePlayer::SelectNextItem( int iItem )
 
 	ResetAutoaim();
 
+
+	
 	// FIX, this needs to queue them up and delay
+	m_pActiveItem->m_ForceSendAnimations = true;
 	if (m_pActiveItem)
-	{
+
 		m_pActiveItem->Holster();
-	}
 
-	m_pActiveItem = pItem;
+	m_pActiveItem->m_ForceSendAnimations = false;
 
-	if (m_pActiveItem)
-	{
-		m_pActiveItem->Deploy();
-		m_pActiveItem->UpdateItemInfo();
-	}
+	m_pNextItem = pItem;
+	m_pActiveItem = nullptr;
 }
 
 void CBasePlayer::SelectItem(const char *pstr)
 {
-	if (!pstr)
+	if (!pstr || m_pNextItem)
 		return;
 
 	CBasePlayerItem *pItem = NULL;
@@ -3016,13 +3021,8 @@ void CBasePlayer::SelectItem(const char *pstr)
 		m_pActiveItem->Holster( );
 	
 	m_pLastItem = m_pActiveItem;
-	m_pActiveItem = pItem;
-
-	if (m_pActiveItem)
-	{
-		m_pActiveItem->Deploy( );
-		m_pActiveItem->UpdateItemInfo( );
-	}
+	m_pNextItem = pItem;
+	m_pActiveItem = nullptr;
 }
 
 
@@ -3041,8 +3041,10 @@ void CBasePlayer::SelectLastItem(void)
 	ResetAutoaim( );
 
 	// FIX, this needs to queue them up and delay
+	m_pActiveItem->m_ForceSendAnimations = true;
 	if (m_pActiveItem)
 		m_pActiveItem->Holster( );
+	m_pActiveItem->m_ForceSendAnimations = false;
 	
 	CBasePlayerItem *pTemp = m_pActiveItem;
 	m_pActiveItem = m_pLastItem;
@@ -3703,6 +3705,19 @@ void CBasePlayer::ItemPreFrame()
 {
     if ( gpGlobals->time < m_flNextAttack )
 		return;
+
+	if (m_pNextItem)
+	{
+		m_pActiveItem = m_pNextItem;
+		if (m_pActiveItem)
+		{
+			m_pActiveItem->m_ForceSendAnimations = true;
+			m_pActiveItem->Deploy();
+			m_pActiveItem->m_ForceSendAnimations = false;
+			m_pActiveItem->UpdateItemInfo();
+		}
+		m_pNextItem = nullptr;
+	}
 
 	if (!m_pActiveItem)
 		return;
