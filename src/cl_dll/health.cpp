@@ -204,26 +204,28 @@ int CHudHealth::Draw(float flTime)
 	GetPainColor( r, g, b );
 	ScaleColors(r, g, b, a );
 
-
+	// Only draw health if we have the suit.
+	if (gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)))
+	{
 		HealthWidth = gHUD.GetSpriteRect(gHUD.m_HUD_number_0).right - gHUD.GetSpriteRect(gHUD.m_HUD_number_0).left;
 		int CrossWidth = gHUD.GetSpriteRect(m_HUD_cross).right - gHUD.GetSpriteRect(m_HUD_cross).left;
 
 		y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
 		x = CrossWidth /2;
 
-		SPR_Set(gHUD.GetSprite(m_HUD_cross), r, g, b);
-		SPR_DrawAdditive(0, x, y, &gHUD.GetSpriteRect(m_HUD_cross));
+		//SPR_Set(gHUD.GetSprite(m_HUD_cross), r, g, b);
+		//SPR_DrawAdditive(0, x, y, &gHUD.GetSpriteRect(m_HUD_cross));
 
-		x = CrossWidth + HealthWidth / 2;
+		//x = CrossWidth + HealthWidth / 2;
 
-		x = gHUD.DrawHudNumber(x, y, DHN_3DIGITS | DHN_DRAWZERO, m_iHealth, r, g, b);
+		x = gHUD.DrawHudNumber(x, y, DHN_3DIGITS | DHN_DRAWZERO, m_iHealth, 0, 255, 0);
 
 		x += HealthWidth/2;
 
 		int iHeight = gHUD.m_iFontHeight;
 		int iWidth = HealthWidth/10;
-		FillRGBA(x, y, iWidth, iHeight, 255, 160, 0, a);
-	
+		//FillRGBA(x, y, iWidth, iHeight, 255, 160, 0, a);
+	}
 
 	DrawDamage(flTime);
 	return DrawPain(flTime);
