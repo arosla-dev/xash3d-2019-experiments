@@ -29,7 +29,7 @@ number_7		320 320hud2	84	0	12  16
 number_8		320 320hud2	96	0	12  16
 number_9		320 320hud2	108	0	12  16
 
-divider			320 320hud2	120	0	1	20
+
 
 cross			320 320hud2	0	72	16	16
 

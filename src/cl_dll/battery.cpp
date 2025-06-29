@@ -29,23 +29,25 @@ DECLARE_MESSAGE(m_Battery, Battery)
 
 int CHudBattery::Init(void)
 {
-
+	return 1;
 };
 
 
 int CHudBattery::VidInit(void)
 {
 
+
+	return 1;
 };
 
 int CHudBattery:: MsgFunc_Battery(const char *pszName,  int iSize, void *pbuf )
 {
-
+	return 1;
 }
 
 
 int CHudBattery::Draw(float flTime)
 {
-
+	return 1;
 }
 #endif
