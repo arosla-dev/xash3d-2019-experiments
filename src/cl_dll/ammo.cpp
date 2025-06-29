@@ -173,10 +173,10 @@ void WeaponsResource :: LoadWeaponSprites( WEAPON *pWeapon )
 	if (p)
 	{
 		sprintf(sz, "sprites/%s.spr", p->szSprite);
-		pWeapon->hAmmo = SPR_Load(sz);
-		pWeapon->rcAmmo = p->rc;
+		pWeapon->hAmmo ;
+		pWeapon->rcAmmo ;
 
-		gHR.iHistoryGap = max( gHR.iHistoryGap, pWeapon->rcActive.bottom - pWeapon->rcActive.top );
+		//gHR.iHistoryGap = max( gHR.iHistoryGap, pWeapon->rcActive.bottom - pWeapon->rcActive.top );
 	}
 	else
 		pWeapon->hAmmo = 0;
@@ -185,10 +185,8 @@ void WeaponsResource :: LoadWeaponSprites( WEAPON *pWeapon )
 	if (p)
 	{
 		sprintf(sz, "sprites/%s.spr", p->szSprite);
-		pWeapon->hAmmo2 = SPR_Load(sz);
-		pWeapon->rcAmmo2 = p->rc;
-
-		gHR.iHistoryGap = max( gHR.iHistoryGap, pWeapon->rcActive.bottom - pWeapon->rcActive.top );
+		pWeapon->hAmmo2;
+		pWeapon->rcAmmo2;
 	}
 	else
 		pWeapon->hAmmo2 = 0;

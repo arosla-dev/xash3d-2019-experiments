@@ -95,16 +95,16 @@ dmg_gas			640 640hud9	0	0	64	64
 dmg_rad			640 640hud9	192 0	64	64
 dmg_shock		640 640hud8	192	0	64	64
 
-number_0		640 640hud7	0	0	20	24
-number_1		640 640hud7	24	0	20	24
-number_2		640 640hud7	48	0	20	24
-number_3		640 640hud7	72	0	20	24
-number_4		640 640hud7	96	0	20	24
-number_5		640 640hud7	120	0	20	24
-number_6		640 640hud7	144	0	20	24
-number_7		640 640hud7	168	0	20	24
-number_8		640 640hud7	192	0	20	24
-number_9		640 640hud7	216	0	20	24
+number_0		640 Big0	0	0	28	40
+number_1		640 Big1	0	0	28	40
+number_2		640 Big2	0	0	28	40
+number_3		640 Big3	0	0	28	40
+number_4		640 Big4	0	0	28	40
+number_5		640 Big5	0	0	28	40
+number_6		640 Big6	0	0	28	40
+number_7		640 Big7	0	0	28	40
+number_8		640 Big8	0	0	28	40
+number_9		640 Big9	0	0	28	40
 
 divider			640 640hud7	240	0	2	40
 
